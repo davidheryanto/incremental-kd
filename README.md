@@ -14,4 +14,4 @@ Source codes and IPython notebook experiments for Incremental KD Project
 - [Numpy](https://github.com/numpy/numpy): Package for scientific computing in Python. Easy installation for Numpy and other useful scientific packages via [Anaconda installer](http://continuum.io/downloads).
 - [Pylearn2](https://github.com/lisa-lab/pylearn2): Machine learning research library from Lisa Lab. Needed for preprocessing CIFAR-10 images. Also, for advanced techniques in deep learning, using Pylearn2 is much more convenient than implementing it from scratch using Theano.
 
-[Report](https://github.com/davidheryanto/incremental-kd/raw/master/report.pdf) for this project.
+[Report](https://github.com/davidheryanto/incremental-kd/blob/master/report.pdf) for this project.
