@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)http://172.29.35.143:10000/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <script type="text/javascript" src="./spearmint_files/jquery-1.8.3.min.js"></script><style type="text/css"></style>
+    <script type="text/javascript" src="./spearmint_files/d3.v3.min.js"></script>
+    <script type="text/javascript" src="./spearmint_files/spearmint.js"></script>
+    <script type="text/javascript" src="./spearmint_files/bootstrap-modal.js"></script>
+    <link rel="stylesheet" type="text/css" href="./spearmint_files/style.css">
+    <title>Spearmint - Experiment Monitor</title>
+    
+    <link href="http://172.29.35.143:10000/static/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        padding-bottom: 60px;
+      }
+    </style>
+    <link href="http://172.29.35.143:10000/static/bootstrap-responsive.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="./spearmint_files/spearmint.html">Spearmint - Bayesian Optimization</a>
+          <div class="nav-collapse collapse">
+	    <img src="./spearmint_files/spearmint_leaf_sm.png" class="leaficon">
+            <!--<ul class="nav">
+              <!--<li><a href="status.html">Status</a></li>
+            </ul>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="container">
+      <div class="row">
+        <!--<div id='content'>-->
+	  <div class="span12">
+            <div id="experiment">
+	      <h3>optimization (PYTHON)</h3>
+            </div>
+	  </div>
+	  <div class="span7">
+            <h3>Status:</h3>
+            <div id="status"><div id="job-status">
+    <!--<div>Candidates:    19998</div>-->
+    <div>Pending:       1</div>
+    <div>Completed:     115</div>
+    <div>Broken:        0</div>
+    <div>Minimum Value: 0.0191</div>
+    <div>Best Params:   <br>temperature:[ 10.62214225],<br>lambda_teacher:[ 0.5176382]</div>
+    <br>
+</div>
+<br><span class="label label-info">Estimated mean:</span> 0.0199937850202<br><span class="label label-info">Estimated noise:</span> 5.66319832358e-10<br><br><span class="label label-info">Inverse parameter sensitivity - Gaussian Process length scales</span><br><br><div id="lschart"><svg class="chart" width="440" height="66" style="margin-left: 32px;"><g transform="translate(10,15)"><line x1="0px" x2="0px" y1="0" y2="60" style="stroke: rgb(204, 204, 204);"></line><line x1="42px" x2="42px" y1="0" y2="60" style="stroke: rgb(204, 204, 204);"></line><line x1="84px" x2="84px" y1="0" y2="60" style="stroke: rgb(204, 204, 204);"></line><line x1="126px" x2="126px" y1="0" y2="60" style="stroke: rgb(204, 204, 204);"></line><line x1="168px" x2="168px" y1="0" y2="60" style="stroke: rgb(204, 204, 204);"></line><line x1="210px" x2="210px" y1="0" y2="60" style="stroke: rgb(204, 204, 204);"></line><line x1="252px" x2="252px" y1="0" y2="60" style="stroke: rgb(204, 204, 204);"></line><line x1="294px" x2="294px" y1="0" y2="60" style="stroke: rgb(204, 204, 204);"></line><line x1="336px" x2="336px" y1="0" y2="60" style="stroke: rgb(204, 204, 204);"></line><line x1="378px" x2="378px" y1="0" y2="60" style="stroke: rgb(204, 204, 204);"></line><line x1="420px" x2="420px" y1="0" y2="60" style="stroke: rgb(204, 204, 204);"></line><text class="rule" x="0px" y="0" dy="-3" text-anchor="middle">0</text><text class="rule" x="105px" y="0" dy="-3" text-anchor="middle">0.5</text><text class="rule" x="210px" y="0" dy="-3" text-anchor="middle">1</text><text class="rule" x="315px" y="0" dy="-3" text-anchor="middle">1.5</text><text class="rule" x="420px" y="0" dy="-3" text-anchor="middle">2</text><rect y="0" width="415.8px" height="60"></rect><rect y="0" width="415.8px" height="60"></rect><text class="bar" x="415.8px" y="30" dx="-3" dy=".35em" text-anchor="end">1.98</text><text class="bar" x="415.8px" y="30" dx="-3" dy=".35em" text-anchor="end">1.98</text><line y1="0" y2="60" style="stroke: rgb(0, 0, 0);"></line></g></svg></div>
+<div id="all-results"><br><span class="label label-info">Experiments Completed</span>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Job ID#</th>
+      <th>Score</th>
+      <th>Parameters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>20001</td><td>0.0223</td><td> temperature:[ 2.],<br>lambda_teacher:[ 0.9]</td></tr> <tr><td>20022</td><td>0.0207</td><td> temperature:[ 2.],<br>lambda_teacher:[ 0.71895077]</td></tr> <tr><td>20020</td><td>0.0205</td><td> temperature:[ 5.59488583],<br>lambda_teacher:[ 0.9]</td></tr> <tr><td>20005</td><td>0.0204</td><td> temperature:[ 2.],<br>lambda_teacher:[ 0.5358901]</td></tr> <tr><td>20002</td><td>0.0202</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.2]</td></tr> <tr><td>20014</td><td>0.0202</td><td> temperature:[ 2.],<br>lambda_teacher:[ 0.34336001]</td></tr> <tr><td>20048</td><td>0.0202</td><td> temperature:[ 4.13101661],<br>lambda_teacher:[ 0.79662211]</td></tr> <tr><td>20000</td><td>0.0201</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.9]</td></tr> <tr><td>20016</td><td>0.0201</td><td> temperature:[ 12.22325717],<br>lambda_teacher:[ 0.9]</td></tr> <tr><td>20006</td><td>0.02</td><td> temperature:[ 8.79973415],<br>lambda_teacher:[ 0.9]</td></tr> <tr><td>20039</td><td>0.0199</td><td> temperature:[ 10.63284056],<br>lambda_teacher:[ 0.81645733]</td></tr> <tr><td>0</td><td>0.0198</td><td> temperature:[ 2.],<br>lambda_teacher:[ 0.2]</td></tr> <tr><td>20012</td><td>0.0198</td><td> temperature:[ 11.23257284],<br>lambda_teacher:[ 0.2]</td></tr> <tr><td>20032</td><td>0.0198</td><td> temperature:[ 6.56316529],<br>lambda_teacher:[ 0.638562]</td></tr> <tr><td>20018</td><td>0.0198</td><td> temperature:[ 8.5786396],<br>lambda_teacher:[ 0.74286432]</td></tr> <tr><td>20026</td><td>0.0198</td><td> temperature:[ 13.35611223],<br>lambda_teacher:[ 0.28342609]</td></tr> <tr><td>20030</td><td>0.0197</td><td> temperature:[ 4.0717146],<br>lambda_teacher:[ 0.43998026]</td></tr> <tr><td>20003</td><td>0.0197</td><td> temperature:[ 6.75892065],<br>lambda_teacher:[ 0.2]</td></tr> <tr><td>20029</td><td>0.0197</td><td> temperature:[ 4.14888811],<br>lambda_teacher:[ 0.62554684]</td></tr> <tr><td>20031</td><td>0.0197</td><td> temperature:[ 13.39882742],<br>lambda_teacher:[ 0.43742656]</td></tr> <tr><td>20011</td><td>0.0197</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.37556554]</td></tr> <tr><td>20035</td><td>0.0197</td><td> temperature:[ 3.73297821],<br>lambda_teacher:[ 0.28589965]</td></tr> <tr><td>1</td><td>0.0196</td><td> temperature:[ 8.5],<br>lambda_teacher:[ 0.55]</td></tr> <tr><td>20007</td><td>0.0196</td><td> temperature:[ 11.21307543],<br>lambda_teacher:[ 0.34403706]</td></tr> <tr><td>20009</td><td>0.0196</td><td> temperature:[ 5.33548771],<br>lambda_teacher:[ 0.72709198]</td></tr> <tr><td>20052</td><td>0.0196</td><td> temperature:[ 9.35955453],<br>lambda_teacher:[ 0.36241715]</td></tr> <tr><td>20033</td><td>0.0196</td><td> temperature:[ 9.19425558],<br>lambda_teacher:[ 0.2590541]</td></tr> <tr><td>20050</td><td>0.0196</td><td> temperature:[ 8.95743013],<br>lambda_teacher:[ 0.2]</td></tr> <tr><td>20004</td><td>0.0195</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.55588168]</td></tr> <tr><td>20008</td><td>0.0195</td><td> temperature:[ 11.93011474],<br>lambda_teacher:[ 0.72269015]</td></tr> <tr><td>20015</td><td>0.0195</td><td> temperature:[ 5.3445278],<br>lambda_teacher:[ 0.529532]</td></tr> <tr><td>20019</td><td>0.0195</td><td> temperature:[ 12.3644756],<br>lambda_teacher:[ 0.52899766]</td></tr> <tr><td>20021</td><td>0.0195</td><td> temperature:[ 4.13315751],<br>lambda_teacher:[ 0.2]</td></tr> <tr><td>20023</td><td>0.0195</td><td> temperature:[ 5.57567505],<br>lambda_teacher:[ 0.29524069]</td></tr> <tr><td>20040</td><td>0.0195</td><td> temperature:[ 6.95783767],<br>lambda_teacher:[ 0.8133911]</td></tr> <tr><td>20043</td><td>0.0195</td><td> temperature:[ 11.07752462],<br>lambda_teacher:[ 0.47187315]</td></tr> <tr><td>20045</td><td>0.0195</td><td> temperature:[ 10.33744553],<br>lambda_teacher:[ 0.5400287]</td></tr> <tr><td>20046</td><td>0.0195</td><td> temperature:[ 8.1609841],<br>lambda_teacher:[ 0.44524719]</td></tr> <tr><td>20049</td><td>0.0195</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.80587113]</td></tr> <tr><td>20013</td><td>0.0194</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.73333205]</td></tr> <tr><td>20017</td><td>0.0194</td><td> temperature:[ 7.81204838],<br>lambda_teacher:[ 0.35163696]</td></tr> <tr><td>20025</td><td>0.0194</td><td> temperature:[ 6.43209522],<br>lambda_teacher:[ 0.43036382]</td></tr> <tr><td>20027</td><td>0.0194</td><td> temperature:[ 9.77227275],<br>lambda_teacher:[ 0.44621925]</td></tr> <tr><td>20028</td><td>0.0194</td><td> temperature:[ 13.68649887],<br>lambda_teacher:[ 0.78936354]</td></tr> <tr><td>20034</td><td>0.0194</td><td> temperature:[ 10.82581743],<br>lambda_teacher:[ 0.607796]</td></tr> <tr><td>20038</td><td>0.0194</td><td> temperature:[ 13.97353744],<br>lambda_teacher:[ 0.70090165]</td></tr> <tr><td>20057</td><td>0.0194</td><td> temperature:[ 6.39652192],<br>lambda_teacher:[ 0.3577127]</td></tr> <tr><td>20058</td><td>0.0194</td><td> temperature:[ 12.73878188],<br>lambda_teacher:[ 0.64663797]</td></tr> <tr><td>20024</td><td>0.0193</td><td> temperature:[ 13.68378577],<br>lambda_teacher:[ 0.65197028]</td></tr> <tr><td>20044</td><td>0.0193</td><td> temperature:[ 12.32129522],<br>lambda_teacher:[ 0.61741841]</td></tr> <tr><td>20047</td><td>0.0193</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.63931996]</td></tr> <tr><td>20051</td><td>0.0193</td><td> temperature:[ 13.88477899],<br>lambda_teacher:[ 0.60486718]</td></tr> <tr><td>20054</td><td>0.0193</td><td> temperature:[ 11.44886935],<br>lambda_teacher:[ 0.56538407]</td></tr> <tr><td>20056</td><td>0.0193</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.65349542]</td></tr> <tr><td>20059</td><td>0.0193</td><td> temperature:[ 14.47379712],<br>lambda_teacher:[ 0.63608412]</td></tr> <tr><td>20061</td><td>0.0193</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.66846071]</td></tr> <tr><td>20062</td><td>0.0193</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.63198968]</td></tr> <tr><td>20037</td><td>0.0193</td><td> temperature:[ 5.66337499],<br>lambda_teacher:[ 0.37624742]</td></tr> <tr><td>20053</td><td>0.0193</td><td> temperature:[ 5.38050826],<br>lambda_teacher:[ 0.37833105]</td></tr> <tr><td>20010</td><td>0.0192</td><td> temperature:[ 4.74537927],<br>lambda_teacher:[ 0.36575773]</td></tr> <tr><td>20036</td><td>0.0192</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.65250551]</td></tr> <tr><td>20042</td><td>0.0192</td><td> temperature:[ 10.58037298],<br>lambda_teacher:[ 0.52050282]</td></tr> <tr><td>20055</td><td>0.0192</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.65309559]</td></tr> <tr><td>20060</td><td>0.0192</td><td> temperature:[ 15.],<br>lambda_teacher:[ 0.66695119]</td></tr> <tr><td>20063</td><td>0.0192</td><td> temperature:[ 5.00729719],<br>lambda_teacher:[ 0.36252863]</td></tr> <tr><td>20064</td><td>0.0192</td><td> temperature:[ 5.04942776],<br>lambda_teacher:[ 0.36561484]</td></tr> <tr><td>20065</td><td>0.0192</td><td> temperature:[ 5.05883496],<br>lambda_teacher:[ 0.36616937]</td></tr> <tr><td>20066</td><td>0.0192</td><td> temperature:[ 5.01201061],<br>lambda_teacher:[ 0.36382525]</td></tr> <tr><td>20067</td><td>0.0192</td><td> temperature:[ 5.04087737],<br>lambda_teacher:[ 0.36512539]</td></tr> <tr><td>20068</td><td>0.0192</td><td> temperature:[ 5.04124304],<br>lambda_teacher:[ 0.36526651]</td></tr> <tr><td>20069</td><td>0.0192</td><td> temperature:[ 5.04382912],<br>lambda_teacher:[ 0.36603921]</td></tr> <tr><td>20070</td><td>0.0192</td><td> temperature:[ 5.06349467],<br>lambda_teacher:[ 0.36652252]</td></tr> <tr><td>20071</td><td>0.0192</td><td> temperature:[ 5.05480279],<br>lambda_teacher:[ 0.36756838]</td></tr> <tr><td>20072</td><td>0.0192</td><td> temperature:[ 5.07393579],<br>lambda_teacher:[ 0.36721877]</td></tr> <tr><td>20073</td><td>0.0192</td><td> temperature:[ 5.05780285],<br>lambda_teacher:[ 0.36673484]</td></tr> <tr><td>20074</td><td>0.0192</td><td> temperature:[ 5.05158276],<br>lambda_teacher:[ 0.36654142]</td></tr> <tr><td>20075</td><td>0.0192</td><td> temperature:[ 5.07587856],<br>lambda_teacher:[ 0.36709849]</td></tr> <tr><td>20076</td><td>0.0192</td><td> temperature:[ 5.10027587],<br>lambda_teacher:[ 0.36910454]</td></tr> <tr><td>20077</td><td>0.0192</td><td> temperature:[ 5.06644429],<br>lambda_teacher:[ 0.36684908]</td></tr> <tr><td>20078</td><td>0.0192</td><td> temperature:[ 5.03681258],<br>lambda_teacher:[ 0.36469263]</td></tr> <tr><td>20079</td><td>0.0192</td><td> temperature:[ 5.0410026],<br>lambda_teacher:[ 0.36516813]</td></tr> <tr><td>20080</td><td>0.0192</td><td> temperature:[ 5.07852044],<br>lambda_teacher:[ 0.36758501]</td></tr> <tr><td>20081</td><td>0.0192</td><td> temperature:[ 5.05184958],<br>lambda_teacher:[ 0.3657969]</td></tr> <tr><td>20082</td><td>0.0192</td><td> temperature:[ 5.08317736],<br>lambda_teacher:[ 0.36815981]</td></tr> <tr><td>20083</td><td>0.0192</td><td> temperature:[ 5.0626261],<br>lambda_teacher:[ 0.36673937]</td></tr> <tr><td>20084</td><td>0.0192</td><td> temperature:[ 5.07020509],<br>lambda_teacher:[ 0.36792905]</td></tr> <tr><td>20085</td><td>0.0192</td><td> temperature:[ 5.07952329],<br>lambda_teacher:[ 0.36920432]</td></tr> <tr><td>20086</td><td>0.0192</td><td> temperature:[ 5.05441657],<br>lambda_teacher:[ 0.36659641]</td></tr> <tr><td>20087</td><td>0.0192</td><td> temperature:[ 5.01274715],<br>lambda_teacher:[ 0.3633383]</td></tr> <tr><td>20088</td><td>0.0192</td><td> temperature:[ 5.05111824],<br>lambda_teacher:[ 0.36649898]</td></tr> <tr><td>20089</td><td>0.0192</td><td> temperature:[ 5.07472257],<br>lambda_teacher:[ 0.36702132]</td></tr> <tr><td>20090</td><td>0.0192</td><td> temperature:[ 5.01885436],<br>lambda_teacher:[ 0.36364598]</td></tr> <tr><td>20091</td><td>0.0192</td><td> temperature:[ 5.03305499],<br>lambda_teacher:[ 0.36438841]</td></tr> <tr><td>20092</td><td>0.0192</td><td> temperature:[ 5.0558734],<br>lambda_teacher:[ 0.3680292]</td></tr> <tr><td>20093</td><td>0.0192</td><td> temperature:[ 5.05639699],<br>lambda_teacher:[ 0.36598852]</td></tr> <tr><td>20094</td><td>0.0192</td><td> temperature:[ 5.05709806],<br>lambda_teacher:[ 0.3660337]</td></tr> <tr><td>20095</td><td>0.0192</td><td> temperature:[ 5.03324415],<br>lambda_teacher:[ 0.36415451]</td></tr> <tr><td>20096</td><td>0.0192</td><td> temperature:[ 5.02241189],<br>lambda_teacher:[ 0.36346915]</td></tr> <tr><td>20097</td><td>0.0192</td><td> temperature:[ 5.05190057],<br>lambda_teacher:[ 0.36587061]</td></tr> <tr><td>20098</td><td>0.0192</td><td> temperature:[ 5.05316478],<br>lambda_teacher:[ 0.36609873]</td></tr> <tr><td>20099</td><td>0.0192</td><td> temperature:[ 5.06387242],<br>lambda_teacher:[ 0.36640909]</td></tr> <tr><td>20100</td><td>0.0192</td><td> temperature:[ 5.05474785],<br>lambda_teacher:[ 0.36639965]</td></tr> <tr><td>20101</td><td>0.0192</td><td> temperature:[ 5.06527287],<br>lambda_teacher:[ 0.36663789]</td></tr> <tr><td>20102</td><td>0.0192</td><td> temperature:[ 5.0504669],<br>lambda_teacher:[ 0.36613628]</td></tr> <tr><td>20103</td><td>0.0192</td><td> temperature:[ 5.05802183],<br>lambda_teacher:[ 0.36615448]</td></tr> <tr><td>20104</td><td>0.0192</td><td> temperature:[ 5.06063977],<br>lambda_teacher:[ 0.36614952]</td></tr> <tr><td>20105</td><td>0.0192</td><td> temperature:[ 5.05123334],<br>lambda_teacher:[ 0.3655667]</td></tr> <tr><td>20106</td><td>0.0192</td><td> temperature:[ 5.05223059],<br>lambda_teacher:[ 0.36565741]</td></tr> <tr><td>20107</td><td>0.0192</td><td> temperature:[ 4.99386111],<br>lambda_teacher:[ 0.36196782]</td></tr> <tr><td>20108</td><td>0.0192</td><td> temperature:[ 5.05883578],<br>lambda_teacher:[ 0.36595604]</td></tr> <tr><td>20109</td><td>0.0192</td><td> temperature:[ 5.03559047],<br>lambda_teacher:[ 0.36466897]</td></tr> <tr><td>20110</td><td>0.0192</td><td> temperature:[ 5.05801139],<br>lambda_teacher:[ 0.36712414]</td></tr> <tr><td>20111</td><td>0.0192</td><td> temperature:[ 5.06273791],<br>lambda_teacher:[ 0.36697618]</td></tr> <tr><td>20112</td><td>0.0192</td><td> temperature:[ 5.07821062],<br>lambda_teacher:[ 0.36788939]</td></tr> <tr><td>20041</td><td>0.0191</td><td> temperature:[ 10.62214225],<br>lambda_teacher:[ 0.5176382]</td></tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+	  </div>
+	  <div class="span5">
+            <div id="result-chart"><svg width="400" height="200"><g transform="translate(0, 200)"><path d="M20,-180L23.130434782608695,-168.52017937219733L26.26086956521739,-167.08520179372198L29.391304347826086,-166.3677130044843L32.52173913043478,-164.93273542600895L35.65217391304348,-164.93273542600895L38.78260869565217,-164.93273542600895L41.913043478260875,-164.21524663677133L45.04347826086956,-164.21524663677133L48.173913043478265,-163.49775784753362L51.30434782608695,-162.78026905829597L54.434782608695656,-162.0627802690583L57.56521739130435,-162.0627802690583L60.69565217391305,-162.0627802690583L63.82608695652174,-162.0627802690583L66.95652173913044,-162.0627802690583L70.08695652173913,-161.34529147982067L73.21739130434783,-161.34529147982065L76.34782608695653,-161.34529147982065L79.47826086956522,-161.34529147982065L82.6086956521739,-161.34529147982062L85.73913043478261,-161.34529147982062L88.86956521739131,-160.62780269058297L92,-160.62780269058297L95.1304347826087,-160.62780269058297L98.26086956521739,-160.62780269058297L101.3913043478261,-160.62780269058297L104.52173913043478,-160.62780269058297L107.65217391304348,-159.91031390134532L110.78260869565217,-159.91031390134532L113.91304347826086,-159.91031390134532L117.04347826086956,-159.91031390134532L120.17391304347827,-159.91031390134532L123.30434782608695,-159.91031390134532L126.43478260869566,-159.91031390134532L129.56521739130437,-159.91031390134532L132.69565217391306,-159.91031390134532L135.82608695652175,-159.91031390134532L138.95652173913044,-159.91031390134532L142.08695652173913,-159.1928251121076L145.2173913043478,-159.1928251121076L148.34782608695653,-159.1928251121076L151.47826086956522,-159.1928251121076L154.6086956521739,-159.1928251121076L157.73913043478262,-159.1928251121076L160.8695652173913,-159.1928251121076L164,-159.1928251121076L167.13043478260872,-159.1928251121076L170.2608695652174,-158.47533632287L173.3913043478261,-158.47533632287L176.52173913043478,-158.47533632287L179.65217391304347,-158.47533632287L182.7826086956522,-158.47533632287L185.91304347826087,-158.47533632287L189.04347826086956,-158.47533632287L192.17391304347828,-158.47533632287L195.30434782608697,-158.47533632287L198.43478260869566,-158.47533632286996L201.56521739130434,-158.47533632286996L204.69565217391306,-157.7578475336323L207.82608695652172,-157.7578475336323L210.95652173913044,-157.7578475336323L214.08695652173913,-157.7578475336323L217.21739130434784,-157.7578475336323L220.34782608695653,-157.7578475336323L223.4782608695652,-157.7578475336323L226.6086956521739,-157.7578475336323L229.7391304347826,-157.7578475336323L232.8695652173913,-157.7578475336323L236,-157.7578475336323L239.13043478260872,-157.7578475336323L242.26086956521738,-157.7578475336323L245.3913043478261,-157.7578475336323L248.52173913043478,-157.7578475336323L251.6521739130435,-157.7578475336323L254.7826086956522,-157.7578475336323L257.9130434782609,-157.7578475336323L261.04347826086956,-157.7578475336323L264.17391304347825,-157.7578475336323L267.304347826087,-157.7578475336323L270.4347826086956,-157.7578475336323L273.5652173913044,-157.7578475336323L276.69565217391306,-157.7578475336323L279.82608695652175,-157.7578475336323L282.95652173913044,-157.7578475336323L286.0869565217391,-157.7578475336323L289.2173913043478,-157.7578475336323L292.3478260869565,-157.7578475336323L295.47826086956525,-157.7578475336323L298.6086956521739,-157.7578475336323L301.7391304347826,-157.7578475336323L304.8695652173913,-157.7578475336323L308,-157.7578475336323L311.1304347826087,-157.7578475336323L314.26086956521743,-157.7578475336323L317.39130434782606,-157.7578475336323L320.5217391304348,-157.7578475336323L323.6521739130435,-157.7578475336323L326.7826086956522,-157.7578475336323L329.9130434782609,-157.7578475336323L333.04347826086956,-157.7578475336323L336.17391304347825,-157.7578475336323L339.30434782608694,-157.7578475336323L342.4347826086957,-157.7578475336323L345.5652173913044,-157.7578475336323L348.69565217391306,-157.7578475336323L351.82608695652175,-157.7578475336323L354.95652173913044,-157.7578475336323L358.0869565217391,-157.7578475336323L361.2173913043478,-157.7578475336323L364.34782608695656,-157.7578475336323L367.4782608695652,-157.7578475336323L370.60869565217394,-157.7578475336323L373.7391304347826,-157.7578475336323L376.8695652173913,-157.0403587443946"></path><line x1="20" y1="-20" x2="1272.1739130434783" y2="-20"></line><line x1="20" y1="-20" x2="20" y2="-180"></line><text class="xLabel" x="20" y="0" text-anchor="middle">0</text><text class="xLabel" x="82.6086956521739" y="0" text-anchor="middle">20</text><text class="xLabel" x="145.2173913043478" y="0" text-anchor="middle">40</text><text class="xLabel" x="207.82608695652172" y="0" text-anchor="middle">60</text><text class="xLabel" x="270.4347826086956" y="0" text-anchor="middle">80</text><text class="xLabel" x="333.04347826086956" y="0" text-anchor="middle">100</text><text class="yLabel" x="0" y="-20" text-anchor="right" dy="4">0</text><text class="yLabel" x="0" y="-55.874439461883405" text-anchor="right" dy="4">0.005</text><text class="yLabel" x="0" y="-91.74887892376681" text-anchor="right" dy="4">0.01</text><text class="yLabel" x="0" y="-127.62331838565021" text-anchor="right" dy="4">0.015</text><text class="yLabel" x="0" y="-163.49775784753362" text-anchor="right" dy="4">0.02</text><line class="xTicks" x1="20" y1="-20" x2="20" y2="2132.4663677130043"></line><line class="xTicks" x1="82.6086956521739" y1="-20" x2="82.6086956521739" y2="2132.4663677130043"></line><line class="xTicks" x1="145.2173913043478" y1="-20" x2="145.2173913043478" y2="2132.4663677130043"></line><line class="xTicks" x1="207.82608695652172" y1="-20" x2="207.82608695652172" y2="2132.4663677130043"></line><line class="xTicks" x1="270.4347826086956" y1="-20" x2="270.4347826086956" y2="2132.4663677130043"></line><line class="xTicks" x1="333.04347826086956" y1="-20" x2="333.04347826086956" y2="2132.4663677130043"></line><line class="yTicks" y1="-20" x1="19.37391304347826" y2="-20" x2="20"></line><line class="yTicks" y1="-55.874439461883405" x1="19.37391304347826" y2="-55.874439461883405" x2="20"></line><line class="yTicks" y1="-91.74887892376681" x1="19.37391304347826" y2="-91.74887892376681" x2="20"></line><line class="yTicks" y1="-127.62331838565021" x1="19.37391304347826" y2="-127.62331838565021" x2="20"></line><line class="yTicks" y1="-163.49775784753362" x1="19.37391304347826" y2="-163.49775784753362" x2="20"></line></g></svg></div>
+	  </div>
+         <!--</div>-->
+      </div><!--row-->
+      <div class="row">
+	<div class="span12">
+	  <div id="completed_experiments">
+	  </div>
+	</div>
+      </div>
+      <!--</div>-->
+      <div class="row">
+	<div class="span12">
+	  <div id="params">
+            <h4>Parameters:</h4>
+            <div id="parameters">
+              
+              <table class="parameter">
+                <tbody><tr><td>Name: </td><td>temperature</td></tr>
+                <tr><td>Type: </td><td>FLOAT</td></tr>
+                <tr><td>Size: </td><td>1</td></tr>
+                <tr><td>Min:  </td><td>2.0</td></tr>
+                <tr><td>Max:  </td><td>15.0</td></tr>
+              </tbody></table>
+              
+              <table class="parameter">
+                <tbody><tr><td>Name: </td><td>lambda_teacher</td></tr>
+                <tr><td>Type: </td><td>FLOAT</td></tr>
+                <tr><td>Size: </td><td>1</td></tr>
+                <tr><td>Min:  </td><td>0.2</td></tr>
+                <tr><td>Max:  </td><td>0.9</td></tr>
+              </tbody></table>
+              
+            </div>
+            <div id="footer"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--<script src="/static/index_files/bootstrap-transition.js"></script>
+    <script src="/static/index_files/bootstrap-alert.js"></script>    
+    <script src="/static/index_files/bootstrap-dropdown.js"></script>
+    <script src="/static/index_files/bootstrap-scrollspy.js"></script>
+    <script src="/static/index_files/bootstrap-tab.js"></script>
+    <script src="/static/index_files/bootstrap-tooltip.js"></script>
+    <script src="/static/index_files/bootstrap-popover.js"></script>
+    <script src="/static/index_files/bootstrap-button.js"></script>
+    <script src="/static/index_files/bootstrap-collapse.js"></script>
+    <script src="/static/index_files/bootstrap-carousel.js"></script>
+    <script src="/static/index_files/bootstrap-typeahead.js"></script>-->
+
+</body></html>

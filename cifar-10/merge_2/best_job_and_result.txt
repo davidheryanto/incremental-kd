@@ -1,0 +1,7 @@
+Best result: 0.294200
+Job-id: 20069
+Parameters: 
+name: "temperature"
+dbl_val: 4.08239746094
+name: "lambda_teacher"
+dbl_val: 0.871215820312

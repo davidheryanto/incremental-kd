@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)http://172.29.32.102:10001/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <script type="text/javascript" src="./spearmint_files/jquery-1.8.3.min.js"></script><style type="text/css"></style>
+    <script type="text/javascript" src="./spearmint_files/d3.v3.min.js"></script>
+    <script type="text/javascript" src="./spearmint_files/spearmint.js"></script>
+    <script type="text/javascript" src="./spearmint_files/bootstrap-modal.js"></script>
+    <link rel="stylesheet" type="text/css" href="./spearmint_files/style.css">
+    <title>Spearmint - Experiment Monitor</title>
+    
+    <link href="http://172.29.32.102:10001/static/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        padding-bottom: 60px;
+      }
+    </style>
+    <link href="http://172.29.32.102:10001/static/bootstrap-responsive.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="./spearmint_files/spearmint.html">Spearmint - Bayesian Optimization</a>
+          <div class="nav-collapse collapse">
+	    <img src="./spearmint_files/spearmint_leaf_sm.png" class="leaficon">
+            <!--<ul class="nav">
+              <!--<li><a href="status.html">Status</a></li>
+            </ul>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="container">
+      <div class="row">
+        <!--<div id='content'>-->
+	  <div class="span12">
+            <div id="experiment">
+	      <h3>optimization (PYTHON)</h3>
+            </div>
+	  </div>
+	  <div class="span7">
+            <h3>Status:</h3>
+            <div id="status"><div id="job-status">
+    <!--<div>Candidates:    19998</div>-->
+    <div>Pending:       1</div>
+    <div>Completed:     75</div>
+    <div>Broken:        0</div>
+    <div>Minimum Value: 0.311</div>
+    <div>Best Params:   <br>temperature:[ 17.96716866  14.0793145    1.        ],<br>lambda_teacher:[ 0.          1.          0.40530742]</div>
+    <br>
+</div>
+<br><span class="label label-info">Estimated mean:</span> 0.339997320505<br><span class="label label-info">Estimated noise:</span> 1.29159046611e-06<br><br><span class="label label-info">Inverse parameter sensitivity - Gaussian Process length scales</span><br><br><div id="lschart"><svg class="chart" width="440" height="198" style="margin-left: 32px;"><g transform="translate(10,15)"><line x1="0px" x2="0px" y1="0" y2="180" style="stroke: rgb(204, 204, 204);"></line><line x1="42px" x2="42px" y1="0" y2="180" style="stroke: rgb(204, 204, 204);"></line><line x1="84px" x2="84px" y1="0" y2="180" style="stroke: rgb(204, 204, 204);"></line><line x1="126px" x2="126px" y1="0" y2="180" style="stroke: rgb(204, 204, 204);"></line><line x1="168px" x2="168px" y1="0" y2="180" style="stroke: rgb(204, 204, 204);"></line><line x1="210px" x2="210px" y1="0" y2="180" style="stroke: rgb(204, 204, 204);"></line><line x1="252px" x2="252px" y1="0" y2="180" style="stroke: rgb(204, 204, 204);"></line><line x1="294px" x2="294px" y1="0" y2="180" style="stroke: rgb(204, 204, 204);"></line><line x1="336px" x2="336px" y1="0" y2="180" style="stroke: rgb(204, 204, 204);"></line><line x1="378px" x2="378px" y1="0" y2="180" style="stroke: rgb(204, 204, 204);"></line><line x1="420px" x2="420px" y1="0" y2="180" style="stroke: rgb(204, 204, 204);"></line><text class="rule" x="0px" y="0" dy="-3" text-anchor="middle">0</text><text class="rule" x="105px" y="0" dy="-3" text-anchor="middle">0.5</text><text class="rule" x="210px" y="0" dy="-3" text-anchor="middle">1</text><text class="rule" x="315px" y="0" dy="-3" text-anchor="middle">1.5</text><text class="rule" x="420px" y="0" dy="-3" text-anchor="middle">2</text><rect y="0" width="350.7px" height="30"></rect><rect y="30" width="373.8px" height="30"></rect><rect y="60" width="281.40000000000003px" height="30"></rect><rect y="90" width="348.59999999999997px" height="30"></rect><rect y="120" width="365.4px" height="30"></rect><rect y="150" width="115.50000000000001px" height="30"></rect><text class="bar" x="350.7px" y="15" dx="-3" dy=".35em" text-anchor="end">1.67</text><text class="bar" x="373.8px" y="45" dx="-3" dy=".35em" text-anchor="end">1.78</text><text class="bar" x="281.40000000000003px" y="75" dx="-3" dy=".35em" text-anchor="end">1.34</text><text class="bar" x="348.59999999999997px" y="105" dx="-3" dy=".35em" text-anchor="end">1.66</text><text class="bar" x="365.4px" y="135" dx="-3" dy=".35em" text-anchor="end">1.74</text><text class="bar" x="115.50000000000001px" y="165" dx="-3" dy=".35em" text-anchor="end">0.55</text><line y1="0" y2="180" style="stroke: rgb(0, 0, 0);"></line></g></svg></div>
+<div id="all-results"><br><span class="label label-info">Experiments Completed</span>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Job ID#</th>
+      <th>Score</th>
+      <th>Parameters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>20001</td><td>0.3464</td><td> temperature:[  1.   1.  20.],<br>lambda_teacher:[ 0.  1.  1.]</td></tr> <tr><td>20000</td><td>0.3378</td><td> temperature:[ 20.  20.  20.],<br>lambda_teacher:[ 1.  0.  1.]</td></tr> <tr><td>20003</td><td>0.3326</td><td> temperature:[ 20.          15.90162412   1.1494494 ],<br>lambda_teacher:[ 0.  0.  1.]</td></tr> <tr><td>20007</td><td>0.3322</td><td> temperature:[  1.  20.   1.],<br>lambda_teacher:[ 1.  1.  1.]</td></tr> <tr><td>20015</td><td>0.3256</td><td> temperature:[ 8.78808209  1.          4.09001789],<br>lambda_teacher:[ 0.75560638  0.4024095   0.59806281]</td></tr> <tr><td>20004</td><td>0.3254</td><td> temperature:[  1.          20.          16.59478391],<br>lambda_teacher:[ 0.  0.  0.]</td></tr> <tr><td>20012</td><td>0.3248</td><td> temperature:[ 6.87892077  1.          9.7272138 ],<br>lambda_teacher:[ 1.          0.04652332  0.        ]</td></tr> <tr><td>20069</td><td>0.3216</td><td> temperature:[ 20.           1.          17.47739218],<br>lambda_teacher:[ 0.  1.  0.]</td></tr> <tr><td>20008</td><td>0.3214</td><td> temperature:[ 8.61541762  7.35201239  4.78364332],<br>lambda_teacher:[ 0.74832304  0.97140243  0.        ]</td></tr> <tr><td>20017</td><td>0.3214</td><td> temperature:[  2.74169507  14.28723224   1.        ],<br>lambda_teacher:[ 0.41214916  0.34776435  0.02499711]</td></tr> <tr><td>20027</td><td>0.3214</td><td> temperature:[ 20.          13.68012845  13.21634871],<br>lambda_teacher:[ 1.          1.          0.28798953]</td></tr> <tr><td>20036</td><td>0.321</td><td> temperature:[ 20.          20.          12.22056645],<br>lambda_teacher:[ 0.25631177  0.10423784  0.39683043]</td></tr> <tr><td>20072</td><td>0.3208</td><td> temperature:[  1.   1.  20.],<br>lambda_teacher:[ 1.          1.          0.07254815]</td></tr> <tr><td>20045</td><td>0.3206</td><td> temperature:[  1.          20.          10.00000613],<br>lambda_teacher:[ 0.          1.          0.35651592]</td></tr> <tr><td>20010</td><td>0.3204</td><td> temperature:[ 16.68432774  10.78612359   6.43142277],<br>lambda_teacher:[ 0.74295465  0.07962998  0.16135766]</td></tr> <tr><td>0</td><td>0.3202</td><td> temperature:[ 1.  1.  1.],<br>lambda_teacher:[ 0.  0.  0.]</td></tr> <tr><td>20002</td><td>0.3202</td><td> temperature:[ 20.  20.   1.],<br>lambda_teacher:[ 1.  1.  0.]</td></tr> <tr><td>20005</td><td>0.3202</td><td> temperature:[ 20.           4.46516532  20.        ],<br>lambda_teacher:[ 0.91069623  0.15208362  0.        ]</td></tr> <tr><td>20016</td><td>0.3202</td><td> temperature:[ 17.32945313   2.94588147   1.        ],<br>lambda_teacher:[ 0.65201646  0.45468305  0.        ]</td></tr> <tr><td>20058</td><td>0.32</td><td> temperature:[  1.          20.          10.57312057],<br>lambda_teacher:[ 1.          0.          0.45816568]</td></tr> <tr><td>20024</td><td>0.3196</td><td> temperature:[ 20.          13.96059562   6.00207608],<br>lambda_teacher:[ 0.          1.          0.10689894]</td></tr> <tr><td>20059</td><td>0.3196</td><td> temperature:[ 12.74304518   1.          15.59937499],<br>lambda_teacher:[ 0.          0.1570961   0.26588922]</td></tr> <tr><td>20006</td><td>0.3176</td><td> temperature:[ 1.          1.          2.47285336],<br>lambda_teacher:[ 1.          0.          0.88937594]</td></tr> <tr><td>20020</td><td>0.3168</td><td> temperature:[ 20.          8.0402997   1.       ],<br>lambda_teacher:[ 0.90266787  0.96219643  0.65098196]</td></tr> <tr><td>1</td><td>0.3166</td><td> temperature:[ 10.5  10.5  10.5],<br>lambda_teacher:[ 0.5  0.5  0.5]</td></tr> <tr><td>20009</td><td>0.3164</td><td> temperature:[ 6.60516061  5.54610973  2.37677373],<br>lambda_teacher:[ 0.7406131   0.10656182  0.32528435]</td></tr> <tr><td>20055</td><td>0.3158</td><td> temperature:[  9.8927481   12.67687847   1.        ],<br>lambda_teacher:[ 1.          0.          0.63022998]</td></tr> <tr><td>20013</td><td>0.3156</td><td> temperature:[ 20.           1.           3.46905639],<br>lambda_teacher:[ 0.94465979  0.50227629  0.38142111]</td></tr> <tr><td>20040</td><td>0.3154</td><td> temperature:[ 20.  20.   1.],<br>lambda_teacher:[ 0.          1.          0.26793057]</td></tr> <tr><td>20023</td><td>0.315</td><td> temperature:[ 16.47360045   8.62016646   1.        ],<br>lambda_teacher:[ 0.45317898  0.61686665  0.41229911]</td></tr> <tr><td>20053</td><td>0.315</td><td> temperature:[ 20.          20.           2.73080891],<br>lambda_teacher:[ 1.          1.          0.39641953]</td></tr> <tr><td>20025</td><td>0.3148</td><td> temperature:[ 20.   1.   1.],<br>lambda_teacher:[ 0.          0.77438623  0.3364392 ]</td></tr> <tr><td>20041</td><td>0.3146</td><td> temperature:[  1.          13.36825589   1.        ],<br>lambda_teacher:[ 0.          0.          0.47136845]</td></tr> <tr><td>20048</td><td>0.3146</td><td> temperature:[ 16.46484395   8.97840066   1.        ],<br>lambda_teacher:[ 0.50756475  0.          0.45211261]</td></tr> <tr><td>20047</td><td>0.3146</td><td> temperature:[ 1.  1.  1.],<br>lambda_teacher:[ 1.          0.          0.47559957]</td></tr> <tr><td>20071</td><td>0.3146</td><td> temperature:[ 17.53010253   8.96705837   1.        ],<br>lambda_teacher:[ 0.          1.          0.26450372]</td></tr> <tr><td>20039</td><td>0.3144</td><td> temperature:[ 15.62483844  12.83557194   1.        ],<br>lambda_teacher:[ 0.          1.          0.45673905]</td></tr> <tr><td>20044</td><td>0.3144</td><td> temperature:[ 20.  20.   1.],<br>lambda_teacher:[ 1.          0.          0.52214455]</td></tr> <tr><td>20057</td><td>0.3144</td><td> temperature:[  4.71686757  20.           1.        ],<br>lambda_teacher:[ 0.55707331  0.          0.39730413]</td></tr> <tr><td>20063</td><td>0.3144</td><td> temperature:[ 9.51977621  8.86614811  1.        ],<br>lambda_teacher:[ 0.          0.          0.37595801]</td></tr> <tr><td>20042</td><td>0.3142</td><td> temperature:[  1.  20.   1.],<br>lambda_teacher:[ 1.          0.          0.57592247]</td></tr> <tr><td>20054</td><td>0.3142</td><td> temperature:[ 20.   1.   1.],<br>lambda_teacher:[ 1.          0.06952068  0.33413999]</td></tr> <tr><td>20031</td><td>0.3138</td><td> temperature:[ 14.58282356  10.2893633    1.        ],<br>lambda_teacher:[ 0.45629912  0.87013728  0.32160364]</td></tr> <tr><td>20064</td><td>0.3138</td><td> temperature:[ 1.  1.  1.],<br>lambda_teacher:[ 0.          0.65413109  0.31420492]</td></tr> <tr><td>20014</td><td>0.3138</td><td> temperature:[ 12.11436689   1.           1.        ],<br>lambda_teacher:[ 0.52167205  0.35909518  0.47992519]</td></tr> <tr><td>20018</td><td>0.3138</td><td> temperature:[ 13.57711992  13.5793503    1.        ],<br>lambda_teacher:[ 1.          0.56615344  0.38886734]</td></tr> <tr><td>20068</td><td>0.3136</td><td> temperature:[ 10.78102609  20.           1.        ],<br>lambda_teacher:[ 1.          1.          0.50012166]</td></tr> <tr><td>20026</td><td>0.3136</td><td> temperature:[ 20.           7.03449654   1.        ],<br>lambda_teacher:[ 1.          1.          0.32768929]</td></tr> <tr><td>20029</td><td>0.3134</td><td> temperature:[ 11.17463049  17.62973446   1.        ],<br>lambda_teacher:[ 0.3210466   1.          0.34471532]</td></tr> <tr><td>20011</td><td>0.3132</td><td> temperature:[ 11.89819943   1.           1.        ],<br>lambda_teacher:[ 0.96127316  0.44076821  0.47561945]</td></tr> <tr><td>20049</td><td>0.3132</td><td> temperature:[ 10.94441849  20.           1.        ],<br>lambda_teacher:[ 0.485643    0.50276783  0.47987913]</td></tr> <tr><td>20060</td><td>0.3132</td><td> temperature:[ 13.57622492  20.           1.        ],<br>lambda_teacher:[ 1.          0.2970679   0.44731108]</td></tr> <tr><td>20070</td><td>0.3132</td><td> temperature:[ 20.          13.45379698   1.        ],<br>lambda_teacher:[ 0.          0.6772751   0.38911243]</td></tr> <tr><td>20028</td><td>0.313</td><td> temperature:[ 16.19485088   3.25487519   1.        ],<br>lambda_teacher:[ 0.4960897   1.          0.35304735]</td></tr> <tr><td>20035</td><td>0.313</td><td> temperature:[ 16.03309435   1.           1.        ],<br>lambda_teacher:[ 0.07618207  0.          0.34932547]</td></tr> <tr><td>20030</td><td>0.3128</td><td> temperature:[ 10.44982069   9.75039836   1.        ],<br>lambda_teacher:[ 0.          0.54670906  0.31107788]</td></tr> <tr><td>20033</td><td>0.3128</td><td> temperature:[ 14.79720631  16.27785708   1.        ],<br>lambda_teacher:[ 0.05701355  0.47609648  0.35452627]</td></tr> <tr><td>20037</td><td>0.3128</td><td> temperature:[ 20.  20.   1.],<br>lambda_teacher:[ 0.32554798  1.          0.48156755]</td></tr> <tr><td>20066</td><td>0.3128</td><td> temperature:[ 20.          11.63444956   1.        ],<br>lambda_teacher:[ 1.          1.          0.48003882]</td></tr> <tr><td>20051</td><td>0.3124</td><td> temperature:[ 20.          15.84194557   1.        ],<br>lambda_teacher:[ 0.71242881  1.          0.44080837]</td></tr> <tr><td>20061</td><td>0.3124</td><td> temperature:[  9.09888818  12.30081958   1.        ],<br>lambda_teacher:[ 1.          0.          0.46665615]</td></tr> <tr><td>20065</td><td>0.3124</td><td> temperature:[ 9.71393345  1.          1.        ],<br>lambda_teacher:[ 0.          0.44273383  0.29790261]</td></tr> <tr><td>20032</td><td>0.3122</td><td> temperature:[ 20.           7.15443458   1.        ],<br>lambda_teacher:[ 0.36837475  0.50165642  0.3628143 ]</td></tr> <tr><td>20052</td><td>0.3122</td><td> temperature:[ 20.          16.74285196   1.        ],<br>lambda_teacher:[ 1.          0.6202925   0.50835857]</td></tr> <tr><td>20021</td><td>0.312</td><td> temperature:[ 20.          12.93893799   1.        ],<br>lambda_teacher:[ 0.56055259  0.71833803  0.36855124]</td></tr> <tr><td>20034</td><td>0.312</td><td> temperature:[ 20.   1.   1.],<br>lambda_teacher:[ 1.          0.          0.46148716]</td></tr> <tr><td>20062</td><td>0.312</td><td> temperature:[ 5.59041193  1.          1.        ],<br>lambda_teacher:[ 0.          0.          0.36503431]</td></tr> <tr><td>20019</td><td>0.3118</td><td> temperature:[ 20.          10.21838424   1.        ],<br>lambda_teacher:[ 0.34424094  0.89760271  0.35729346]</td></tr> <tr><td>20043</td><td>0.3118</td><td> temperature:[ 13.26555995  10.74349761   1.        ],<br>lambda_teacher:[ 1.          0.          0.53189919]</td></tr> <tr><td>20046</td><td>0.3118</td><td> temperature:[  9.43924127  17.25233037   1.        ],<br>lambda_teacher:[ 0.4910446   0.          0.47936381]</td></tr> <tr><td>20067</td><td>0.3118</td><td> temperature:[ 20.  20.   1.],<br>lambda_teacher:[ 1.          1.          0.56175199]</td></tr> <tr><td>20056</td><td>0.3116</td><td> temperature:[  7.34830449  20.           1.        ],<br>lambda_teacher:[ 1.          0.          0.42336807]</td></tr> <tr><td>20022</td><td>0.3114</td><td> temperature:[ 15.25459933   8.44488746   1.        ],<br>lambda_teacher:[ 0.19865456  0.67262192  0.35144861]</td></tr> <tr><td>20050</td><td>0.3112</td><td> temperature:[ 20.          18.99977965   1.        ],<br>lambda_teacher:[ 1.          1.          0.47406554]</td></tr> <tr><td>20038</td><td>0.311</td><td> temperature:[ 17.96716866  14.0793145    1.        ],<br>lambda_teacher:[ 0.          1.          0.40530742]</td></tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+	  </div>
+	  <div class="span5">
+            <div id="result-chart"><svg width="400" height="200"><g transform="translate(0, 200)"><path d="M20,-179.99999999999997L24.8,-176.02771362586606L29.6,-173.62586605080833L34.4,-173.44110854503464L39.2,-170.39260969976905L44,-170.3002309468822L48.8,-170.0230946882217L53.6,-168.5450346420323L58.400000000000006,-168.4526558891455L63.2,-168.4526558891455L68,-168.4526558891455L72.8,-168.26789838337183L77.6,-168.17551963048498L82.4,-168.08314087759814L87.2,-167.99076212471132L92,-167.89838337182448L96.80000000000001,-167.89838337182448L101.60000000000001,-167.89838337182448L106.4,-167.89838337182448L111.2,-167.80600461893764L116,-167.621247113164L120.80000000000001,-167.621247113164L125.6,-166.69745958429561L130.4,-166.3279445727483L135.2,-166.23556581986142L140,-166.1431870669746L144.8,-165.8660508083141L149.60000000000002,-165.77367205542726L154.4,-165.6812933025404L159.20000000000002,-165.49653579676678L164,-165.49653579676678L168.8,-165.4041570438799L173.60000000000002,-165.3117782909931L178.4,-165.3117782909931L183.20000000000002,-165.31177829099306L188,-165.31177829099306L192.8,-165.21939953810625L197.6,-165.21939953810625L202.4,-165.21939953810625L207.20000000000002,-165.21939953810625L212,-165.12702078521943L216.80000000000004,-165.12702078521943L221.60000000000002,-164.94226327944574L226.4,-164.94226327944574L231.2,-164.9422632794457L236.00000000000003,-164.9422632794457L240.8,-164.84988452655892L245.60000000000002,-164.8498845265589L250.4,-164.75750577367205L255.2,-164.6651270207852L260,-164.6651270207852L264.8,-164.6651270207852L269.6,-164.6651270207852L274.4,-164.5727482678984L279.20000000000005,-164.5727482678984L284,-164.48036951501155L288.8,-164.48036951501155L293.6,-164.48036951501155L298.40000000000003,-164.48036951501155L303.20000000000005,-164.2956120092379L308,-164.29561200923789L312.8,-164.29561200923789L317.6,-164.20323325635104L322.40000000000003,-164.20323325635104L327.20000000000005,-164.11085450346422L332,-164.11085450346422L336.8,-164.11085450346422L341.6,-164.01847575057735L346.40000000000003,-164.01847575057735L351.2,-164.01847575057735L356,-164.01847575057735L360.8,-163.92609699769056L365.6,-163.83371824480372L370.40000000000003,-163.74133949191688L375.2,-163.64896073903003"></path><line x1="20" y1="-20" x2="1940.0000000000002" y2="-20"></line><line x1="20" y1="-20" x2="20" y2="-179.99999999999997"></line><text class="xLabel" x="20" y="0" text-anchor="middle">0</text><text class="xLabel" x="116" y="0" text-anchor="middle">20</text><text class="xLabel" x="212" y="0" text-anchor="middle">40</text><text class="xLabel" x="308" y="0" text-anchor="middle">60</text><text class="yLabel" x="0" y="-20" text-anchor="right" dy="4">0</text><text class="yLabel" x="0" y="-66.18937644341801" text-anchor="right" dy="4">0.1</text><text class="yLabel" x="0" y="-112.37875288683603" text-anchor="right" dy="4">0.2</text><text class="yLabel" x="0" y="-158.56812933025404" text-anchor="right" dy="4">0.3</text><line class="xTicks" x1="20" y1="-20" x2="20" y2="118.56812933025404"></line><line class="xTicks" x1="116" y1="-20" x2="116" y2="118.56812933025404"></line><line class="xTicks" x1="212" y1="-20" x2="212" y2="118.56812933025404"></line><line class="xTicks" x1="308" y1="-20" x2="308" y2="118.56812933025404"></line><line class="yTicks" y1="-20" x1="19.04" y2="-20" x2="20"></line><line class="yTicks" y1="-66.18937644341801" x1="19.04" y2="-66.18937644341801" x2="20"></line><line class="yTicks" y1="-112.37875288683603" x1="19.04" y2="-112.37875288683603" x2="20"></line><line class="yTicks" y1="-158.56812933025404" x1="19.04" y2="-158.56812933025404" x2="20"></line></g></svg></div>
+	  </div>
+         <!--</div>-->
+      </div><!--row-->
+      <div class="row">
+	<div class="span12">
+	  <div id="completed_experiments">
+	  </div>
+	</div>
+      </div>
+      <!--</div>-->
+      <div class="row">
+	<div class="span12">
+	  <div id="params">
+            <h4>Parameters:</h4>
+            <div id="parameters">
+              
+              <table class="parameter">
+                <tbody><tr><td>Name: </td><td>temperature</td></tr>
+                <tr><td>Type: </td><td>FLOAT</td></tr>
+                <tr><td>Size: </td><td>3</td></tr>
+                <tr><td>Min:  </td><td>1.0</td></tr>
+                <tr><td>Max:  </td><td>20.0</td></tr>
+              </tbody></table>
+              
+              <table class="parameter">
+                <tbody><tr><td>Name: </td><td>lambda_teacher</td></tr>
+                <tr><td>Type: </td><td>FLOAT</td></tr>
+                <tr><td>Size: </td><td>3</td></tr>
+                <tr><td>Min:  </td><td>0.0</td></tr>
+                <tr><td>Max:  </td><td>1.0</td></tr>
+              </tbody></table>
+              
+            </div>
+            <div id="footer"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--<script src="/static/index_files/bootstrap-transition.js"></script>
+    <script src="/static/index_files/bootstrap-alert.js"></script>    
+    <script src="/static/index_files/bootstrap-dropdown.js"></script>
+    <script src="/static/index_files/bootstrap-scrollspy.js"></script>
+    <script src="/static/index_files/bootstrap-tab.js"></script>
+    <script src="/static/index_files/bootstrap-tooltip.js"></script>
+    <script src="/static/index_files/bootstrap-popover.js"></script>
+    <script src="/static/index_files/bootstrap-button.js"></script>
+    <script src="/static/index_files/bootstrap-collapse.js"></script>
+    <script src="/static/index_files/bootstrap-carousel.js"></script>
+    <script src="/static/index_files/bootstrap-typeahead.js"></script>-->
+
+</body></html>

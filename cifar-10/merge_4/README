@@ -1,0 +1,1 @@
+nohup spearmint ./optimization.pb --driver=local --method=GPEIOptChooser --method-args=noiseless=0 -w --port=10001 --host=0.0.0.0 &> spearmint.out &
