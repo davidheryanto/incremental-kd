@@ -41,7 +41,6 @@ import sys
 import time
 
 import numpy
-
 import theano
 import theano.tensor as T
 
@@ -55,7 +54,7 @@ class LogisticRegression(object):
     determine a class membership probability.
     """
 
-    def __init__(self, input, n_in, n_out, temperature=1):
+    def __init__(self, input, n_in, n_out, W=None, b=None, temperature=1):
         """ Initialize the parameters of the logistic regression
 
         :type input: theano.tensor.TensorType
@@ -73,23 +72,24 @@ class LogisticRegression(object):
         """
         # start-snippet-1
         # initialize with 0 the weights W as a matrix of shape (n_in, n_out)
-        self.W = theano.shared(
-            value=numpy.zeros(
-                (n_in, n_out),
-                dtype=theano.config.floatX
-            ),
-            name='W',
-            borrow=True
-        )
+        if W is None:
+            self.W = theano.shared(
+                value=numpy.zeros((n_in, n_out), dtype=theano.config.floatX),
+                name='W',
+                borrow=True
+            )
+        else:
+            self.W = W
+
         # initialize the baises b as a vector of n_out 0s
-        self.b = theano.shared(
-            value=numpy.zeros(
-                (n_out,),
-                dtype=theano.config.floatX
-            ),
-            name='b',
-            borrow=True
-        )
+        if b is None:
+            self.b = theano.shared(
+                value=numpy.zeros((n_out,), dtype=theano.config.floatX),
+                name='b',
+                borrow=True
+            )
+        else:
+            self.b = b
 
         # symbolic expression for computing the matrix of class-membership
         # probabilities
@@ -178,7 +178,7 @@ def load_cifar10():
     def rotate_and_convert_grayscale(img):
         reshaped = img.reshape(32, 32, 3, order='F')
         rotated = np.rot90(reshaped, k=3)
-        grayscaled = np.dot(rotated[:,:,:3],[0.299, 0.587, 0.144])
+        grayscaled = np.dot(rotated[:, :, :3], [0.299, 0.587, 0.144])
         return grayscaled
 
     def transform(img_set):
@@ -206,26 +206,25 @@ def load_cifar10():
     # Convert the images to grayscale and flatten them
     train_set.X = transform(train_set.X)
     valid_set.X = transform(valid_set.X)
-    test_set.X  = transform(test_set.X)
+    test_set.X = transform(test_set.X)
 
     def shared_y_cast(y):
         shared_y = theano.shared(numpy.asarray(y, dtype=theano.config.floatX), borrow=True)
         return T.cast(shared_y, 'int32')
 
     train_set_tuple = (theano.shared(np.array(train_set.X, dtype=theano.config.floatX), borrow=True),
-                      shared_y_cast(train_set.y.ravel()))
+                       shared_y_cast(train_set.y.ravel()))
 
     valid_set_tuple = (theano.shared(np.array(valid_set.X, dtype=theano.config.floatX), borrow=True),
-                      shared_y_cast(valid_set.y.ravel()))
+                       shared_y_cast(valid_set.y.ravel()))
 
     test_set_tuple = (theano.shared(np.array(test_set.X, dtype=theano.config.floatX), borrow=True),
-                     shared_y_cast(test_set.y.ravel()))
+                      shared_y_cast(test_set.y.ravel()))
 
     return [train_set_tuple, valid_set_tuple, test_set_tuple]
 
 
 def load_cifar10(cifar_path, confidence_ascending=None):
-    import numpy as np
     from pylearn2.datasets.zca_dataset import ZCA_Dataset
     from pylearn2.utils import serial
     import theano
@@ -252,6 +251,7 @@ def load_cifar10(cifar_path, confidence_ascending=None):
 
     if confidence_ascending is not None:
         import numpy as np
+
         X_new = np.empty_like(train_set.X)
         y_new = np.empty_like(train_set.y)
 
@@ -266,28 +266,29 @@ def load_cifar10(cifar_path, confidence_ascending=None):
 
     train_set.X = flatten(train_set.X)
     valid_set.X = flatten(valid_set.X)
-    test_set.X  = flatten(test_set.X)
+    test_set.X = flatten(test_set.X)
 
     train_set_tuple = \
-        theano.shared(np.array(train_set.X, dtype=theano.config.floatX), borrow=True),\
+        theano.shared(np.array(train_set.X, dtype=theano.config.floatX), borrow=True), \
         shared_y_cast(train_set.y.ravel())
 
     valid_set_tuple = \
-        theano.shared(np.array(valid_set.X, dtype=theano.config.floatX), borrow=True),\
+        theano.shared(np.array(valid_set.X, dtype=theano.config.floatX), borrow=True), \
         shared_y_cast(valid_set.y.ravel())
 
     test_set_tuple = \
-        theano.shared(np.array(test_set.X, dtype=theano.config.floatX), borrow=True),\
+        theano.shared(np.array(test_set.X, dtype=theano.config.floatX), borrow=True), \
         shared_y_cast(test_set.y.ravel())
 
     return [train_set_tuple, valid_set_tuple, test_set_tuple]
 
+
 def load_data(dataset, confidence_ascending=None):
-    ''' Loads the dataset
+    """ Loads the dataset
 
     :type dataset: string
     :param dataset: the path to the dataset (here MNIST)
-    '''
+    """
 
     #############
     # LOAD DATA #
@@ -308,6 +309,7 @@ def load_data(dataset, confidence_ascending=None):
 
     if (not os.path.isfile(dataset)) and data_file == 'mnist.pkl.gz':
         import urllib
+
         origin = (
             'http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist.pkl.gz'
         )
@@ -320,15 +322,16 @@ def load_data(dataset, confidence_ascending=None):
     f = gzip.open(dataset, 'rb')
     train_set, valid_set, test_set = cPickle.load(f)
     f.close()
-    #train_set, valid_set, test_set format: tuple(input, target)
-    #input is an numpy.ndarray of 2 dimensions (a matrix)
-    #witch row's correspond to an example. target is a
-    #numpy.ndarray of 1 dimensions (vector)) that have the same length as
-    #the number of rows in the input. It should give the target
-    #target to the example with the same index in the input.
+    # train_set, valid_set, test_set format: tuple(input, target)
+    # input is an numpy.ndarray of 2 dimensions (a matrix)
+    # witch row's correspond to an example. target is a
+    # numpy.ndarray of 1 dimensions (vector)) that have the same length as
+    # the number of rows in the input. It should give the target
+    # target to the example with the same index in the input.
 
     if confidence_ascending is not None:
         import numpy as np
+
         X_new = np.empty_like(train_set[0])
         y_new = np.empty_like(train_set[1])
 
@@ -339,7 +342,6 @@ def load_data(dataset, confidence_ascending=None):
             y_new[i] = train_set[1][index_new]
 
         train_set = (X_new, y_new)
-
 
     def shared_dataset(data_xy, borrow=True):
         """ Function that loads the dataset into shared variables
@@ -479,14 +481,14 @@ def sgd_optimization_mnist(learning_rate=0.13, n_epochs=1000,
     # early-stopping parameters
     patience = 5000  # look as this many examples regardless
     patience_increase = 2  # wait this much longer when a new best is
-                                  # found
+    # found
     improvement_threshold = 0.995  # a relative improvement of this much is
-                                  # considered significant
+    # considered significant
     validation_frequency = min(n_train_batches, patience / 2)
-                                  # go through this many
-                                  # minibatche before checking the network
-                                  # on the validation set; in this case we
-                                  # check every epoch
+    # go through this many
+    # minibatche before checking the network
+    # on the validation set; in this case we
+    # check every epoch
 
     best_validation_loss = numpy.inf
     test_score = 0.
@@ -520,9 +522,9 @@ def sgd_optimization_mnist(learning_rate=0.13, n_epochs=1000,
 
                 # if we got the best validation score until now
                 if this_validation_loss < best_validation_loss:
-                    #improve patience if loss improvement is good enough
-                    if this_validation_loss < best_validation_loss *  \
-                       improvement_threshold:
+                    # improve patience if loss improvement is good enough
+                    if this_validation_loss < best_validation_loss * \
+                            improvement_threshold:
                         patience = max(patience, iter * patience_increase)
 
                     best_validation_loss = this_validation_loss
@@ -562,6 +564,7 @@ def sgd_optimization_mnist(learning_rate=0.13, n_epochs=1000,
     print >> sys.stderr, ('The code for file ' +
                           os.path.split(__file__)[1] +
                           ' ran for %.1fs' % ((end_time - start_time)))
+
 
 if __name__ == '__main__':
     sgd_optimization_mnist()

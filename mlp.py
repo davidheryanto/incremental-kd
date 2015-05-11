@@ -20,29 +20,30 @@ References:
 """
 __docformat__ = 'restructedtext en'
 
-
 import os
 import sys
 import time
 import cPickle
 
 import numpy
-
 import theano
 import theano.tensor as T
-
+import theano.tensor.shared_randomstreams
 
 from logistic_sgd import LogisticRegression, load_data
+
 
 def save_params(file_name, classifier):
     with open(file_name, 'wb') as out_file:
         cPickle.dump(classifier.params, out_file)
+
 
 def set_params(file_name, classifier):
     with open(file_name, 'rb') as in_file:
         new_params = cPickle.load(in_file)
     for current_p, new_p in zip(classifier.params, new_params):
         current_p.set_value(new_p.eval())
+
 
 def reset_params(file_name, classifier):
     with open(file_name, 'rb') as in_file:
@@ -59,13 +60,16 @@ def reset_params(file_name, classifier):
     for p in classifier.params[:2]:
         print(p[0].eval().ravel()[:5])
 
+
 def save_valid_error(file_name, valid_error):
     with open(file_name, 'wb') as out_file:
         cPickle.dump(valid_error, out_file)
 
+
 def load_valid_error(file_name):
     with open(file_name, 'rb') as in_file:
         return cPickle.load(in_file)
+
 
 # start-snippet-1
 class HiddenLayer(object):
@@ -105,9 +109,9 @@ class HiddenLayer(object):
         # the output of uniform if converted using asarray to dtype
         # theano.config.floatX so that the code is runable on GPU
         # Note : optimal initialization of weights is dependent on the
-        #        activation function used (among other things).
-        #        For example, results presented in [Xavier10] suggest that you
-        #        should use 4 times larger initial weights for sigmoid
+        # activation function used (among other things).
+        # For example, results presented in [Xavier10] suggest that you
+        # should use 4 times larger initial weights for sigmoid
         #        compared to tanh
         #        We have no info for other function, so we use the same as
         #        tanh.
@@ -140,8 +144,23 @@ class HiddenLayer(object):
         # parameters of the model
         self.params = [self.W, self.b]
 
+
+class DropoutHiddenLayer(HiddenLayer):
+    def __init__(self, rng, input, n_in, n_out, dropout_p, W=None, b=None,
+                 activation=T.tanh):
+        """
+        :param rng: Numpy random number generator
+        :type rng: numpy.random.RandomState
+        """
+        super(DropoutHiddenLayer, self).__init__(
+            rng=rng, input=input, n_in=n_in, n_out=n_out, W=W, b=b, activation=activation
+        )
+        self.output = _dropout_from_layer(rng, self.output, p=dropout_p)
+
+
 class LeNetConvPoolLayer(object):
     """Pool Layer of a convolutional network """
+
     def __init__(self, rng, input, filter_shape, image_shape, poolsize=(2, 2)):
         from theano.tensor.signal import downsample
         from theano.tensor.nnet import conv
@@ -175,7 +194,7 @@ class LeNetConvPoolLayer(object):
         fan_in = numpy.prod(filter_shape[1:])
         # each unit in the lower layer receives a gradient from:
         # "num output feature maps * filter height * filter width" /
-        #   pooling size
+        # pooling size
         fan_out = (filter_shape[0] * numpy.prod(filter_shape[2:]) /
                    numpy.prod(poolsize))
         # initialize weights with random weights
@@ -217,6 +236,20 @@ class LeNetConvPoolLayer(object):
         self.params = [self.W, self.b]
 
 
+def _dropout_from_layer(rng, layer, p):
+    """p is the probablity of dropping a unit
+    """
+    SEED = 3912309
+    srng = theano.tensor.shared_randomstreams.RandomStreams(
+        rng.randint(SEED))
+    # p=1-p because 1's indicate keep and p is prob of dropping
+    mask = srng.binomial(n=1, p=1 - p, size=layer.shape)
+    # The cast is important because
+    # int * float32 = float64 which pulls things off the gpu
+    output = layer * T.cast(mask, theano.config.floatX)
+    return output
+
+
 # start-snippet-2
 class MLP(object):
     """Multi-Layer Perceptron Class
@@ -229,8 +262,12 @@ class MLP(object):
     class).
     """
 
-    def __init__(self, rng, input, n_in, n_hidden, n_out, temperature=1):
+    def __init__(self, rng, input, n_in, n_hidden, n_out, dropout_ps, temperature=1):
         """Initialize the parameters for the multilayer perceptron
+
+        :type dropout_ps: list
+        :param dropout_ps: probability of dropping each activation units in
+                           each layer, starting from the input layer
 
         :type rng: numpy.random.RandomState
         :param rng: a random number generator used to initialize weights
@@ -251,60 +288,84 @@ class MLP(object):
         which the labels lie
 
         """
+        next_layer_input = input
+        next_dropout_layer_input = _dropout_from_layer(rng, input, p=dropout_ps[0])
 
         # Since we are dealing with a one hidden layer MLP, this will translate
         # into a HiddenLayer with a tanh activation function connected to the
         # LogisticRegression layer; the activation function can be replaced by
         # sigmoid or any other nonlinear function
-        self.hiddenLayer = HiddenLayer(
+        self.dropoutHiddenLayer = DropoutHiddenLayer(
             rng=rng,
-            input=input,
+            input=next_dropout_layer_input,
             n_in=n_in,
             n_out=n_hidden,
+            dropout_p=dropout_ps[1],
             activation=T.tanh
+        )
+
+        self.hiddenLayer = HiddenLayer(
+            rng=rng,
+            input=next_layer_input,
+            activation=T.tanh,
+            W=self.dropoutHiddenLayer.W * (1 - dropout_ps[0]),
+            b=self.dropoutHiddenLayer.b,
+            n_in=n_in,
+            n_out=n_out
+        )
+
+        self.dropoutLogRegressionLayer = LogisticRegression(
+            input=self.dropoutHiddenLayer.output,
+            n_in=n_hidden,
+            n_out=n_out,
+            temperature=temperature
         )
 
         # The logistic regression layer gets as input the hidden units
         # of the hidden layer
         self.logRegressionLayer = LogisticRegression(
             input=self.hiddenLayer.output,
+            W=self.dropoutLogRegressionLayer.W * (1 - dropout_ps[1]),
+            b=self.dropoutLogRegressionLayer.b,
             n_in=n_hidden,
             n_out=n_out,
             temperature=temperature
         )
+
         # end-snippet-2 start-snippet-3
         # L1 norm ; one regularization option is to enforce L1 norm to
         # be small
         self.L1 = (
-            abs(self.hiddenLayer.W).sum()
-            + abs(self.logRegressionLayer.W).sum()
+            abs(self.dropoutHiddenLayer.W).sum()
+            + abs(self.dropoutLogRegressionLayer.W).sum()
         )
 
         # square of L2 norm ; one regularization option is to enforce
         # square of L2 norm to be small
         self.L2_sqr = (
-            (self.hiddenLayer.W ** 2).sum()
-            + (self.logRegressionLayer.W ** 2).sum()
+            (self.dropoutHiddenLayer.W ** 2).sum()
+            + (self.dropoutLogRegressionLayer.W ** 2).sum()
         )
 
         # negative log likelihood of the MLP is given by the negative
         # log likelihood of the output of the model, computed in the
         # logistic regression layera
-        self.negative_log_likelihood = (
-            self.logRegressionLayer.negative_log_likelihood
-        )
+        self.negative_log_likelihood = self.logRegressionLayer.negative_log_likelihood
+        self.dropout_negative_log_likelihood = (
+            self.dropoutLogRegressionLayer.negative_log_likelihood)
 
         self.p_y_given_x = self.logRegressionLayer.p_y_given_x
-
         self.p_y_given_x_relaxed = self.logRegressionLayer.p_y_given_x_relaxed
+        # TODO: should p_y_given_x for dropout be done as well?
 
         # same holds for the function computing the number of errors
         self.errors = self.logRegressionLayer.errors
+        self.droput_errors = self.dropoutLogRegressionLayer.errors
 
         # the parameters of the model are the parameters of the two layer it is
         # made out of
-        self.params = self.hiddenLayer.params + self.logRegressionLayer.params
-        # end-snippet-3
+        self.params = self.dropoutHiddenLayer.params + self.dropoutLogRegressionLayer.params
+
 
 class MLPConv(object):
     def __init__(self,
@@ -312,13 +373,12 @@ class MLPConv(object):
                  model_input,
                  image_shape=(3, 32, 32),
                  filter_shape=(5, 5),
-                 poolsize=(2,2),
+                 poolsize=(2, 2),
                  batch_size=100,
                  nkerns=(20, 50),
                  n_in=400,
                  n_out=10,
                  temperature=1):
-
         layer0_input = model_input.reshape((batch_size,) + image_shape)
         self.layer0 = LeNetConvPoolLayer(
             rng,
@@ -331,7 +391,7 @@ class MLPConv(object):
         self.layer1 = LeNetConvPoolLayer(
             rng,
             input=self.layer0.output,
-            image_shape=(batch_size,) + (nkerns[0],) +  (14, 14),
+            image_shape=(batch_size,) + (nkerns[0],) + (14, 14),
             filter_shape=(nkerns[1], nkerns[0]) + (5, 5),
             poolsize=poolsize,
         )
@@ -376,7 +436,7 @@ class MLPConv(object):
 
 
 def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
-             dataset='mnist.pkl.gz', batch_size=20, n_hidden=500):
+             dataset='mnist.pkl.gz', drouput_ps=[0.2, 0.5], batch_size=20, n_hidden=500):
     """
     Demonstrate stochastic gradient descent optimization for a multilayer
     perceptron
@@ -404,7 +464,8 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
 
 
    """
-    datasets = load_data(dataset)
+    data_path = os.getenv('DATA_PATH', '.')
+    datasets = load_data(os.path.join(data_path, 'mnist.pkl.gz'))
 
     train_set_x, train_set_y = datasets[0]
     valid_set_x, valid_set_y = datasets[1]
@@ -424,7 +485,7 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
     index = T.lscalar()  # index to a [mini]batch
     x = T.matrix('x')  # the data is presented as rasterized images
     y = T.ivector('y')  # the labels are presented as 1D vector of
-                        # [int] labels
+    # [int] labels
 
     rng = numpy.random.RandomState(1234)
 
@@ -434,7 +495,8 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
         input=x,
         n_in=28 * 28,
         n_hidden=n_hidden,
-        n_out=10
+        n_out=10,
+        dropout_ps=drouput_ps
     )
 
     # start-snippet-4
@@ -442,7 +504,7 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
     # the model plus the regularization terms (L1 and L2); cost is expressed
     # here symbolically
     cost = (
-        classifier.negative_log_likelihood(y)
+        classifier.dropout_negative_log_likelihood(y)
         + L1_reg * classifier.L1
         + L2_reg * classifier.L2_sqr
     )
@@ -479,7 +541,7 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
     # given two list the zip A = [a1, a2, a3, a4] and B = [b1, b2, b3, b4] of
     # same length, zip generates a list C of same size, where each element
     # is a pair formed from the two lists :
-    #    C = [(a1, b1), (a2, b2), (a3, b3), (a4, b4)]
+    # C = [(a1, b1), (a2, b2), (a3, b3), (a4, b4)]
     updates = [
         (param, param - learning_rate * gparam)
         for param, gparam in zip(classifier.params, gparams)
@@ -507,14 +569,14 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
     # early-stopping parameters
     patience = 10000  # look as this many examples regardless
     patience_increase = 2  # wait this much longer when a new best is
-                           # found
+    # found
     improvement_threshold = 0.995  # a relative improvement of this much is
-                                   # considered significant
+    # considered significant
     validation_frequency = min(n_train_batches, patience / 2)
-                                  # go through this many
-                                  # minibatche before checking the network
-                                  # on the validation set; in this case we
-                                  # check every epoch
+    # go through this many
+    # minibatche before checking the network
+    # on the validation set; in this case we
+    # check every epoch
 
     best_validation_loss = numpy.inf
     best_iter = 0
@@ -525,7 +587,7 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
     done_looping = False
 
     while (epoch < n_epochs) and (not done_looping):
-        epoch = epoch + 1
+        epoch += 1
         for minibatch_index in xrange(n_train_batches):
 
             minibatch_avg_cost = train_model(minibatch_index)
@@ -550,10 +612,10 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
 
                 # if we got the best validation score until now
                 if this_validation_loss < best_validation_loss:
-                    #improve patience if loss improvement is good enough
+                    # improve patience if loss improvement is good enough
                     if (
-                        this_validation_loss < best_validation_loss *
-                        improvement_threshold
+                                this_validation_loss < best_validation_loss *
+                                improvement_threshold
                     ):
                         patience = max(patience, iter * patience_increase)
 
