@@ -505,8 +505,8 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
     # here symbolically
     cost = (
         classifier.dropout_negative_log_likelihood(y)
-        + L1_reg * classifier.L1
-        + L2_reg * classifier.L2_sqr
+        # + L1_reg * classifier.L1
+        # + L2_reg * classifier.L2_sqr
     )
     # end-snippet-4
 

@@ -1,0 +1,16 @@
+epoch 988, minibatch 2500/2500, validation error 1.650000 %
+epoch 989, minibatch 2500/2500, validation error 1.590000 %
+epoch 990, minibatch 2500/2500, validation error 1.660000 %
+epoch 991, minibatch 2500/2500, validation error 1.630000 %
+epoch 992, minibatch 2500/2500, validation error 1.720000 %
+epoch 993, minibatch 2500/2500, validation error 1.690000 %
+epoch 994, minibatch 2500/2500, validation error 1.670000 %
+epoch 995, minibatch 2500/2500, validation error 1.660000 %
+epoch 996, minibatch 2500/2500, validation error 1.630000 %
+epoch 997, minibatch 2500/2500, validation error 1.660000 %
+epoch 998, minibatch 2500/2500, validation error 1.660000 %
+epoch 999, minibatch 2500/2500, validation error 1.650000 %
+epoch 1000, minibatch 2500/2500, validation error 1.640000 %
+Optimization complete. Best validation score of 1.570000 % obtained at iteration 2365000, with test performance 1.600000 %
+The code for file mlp.py ran for 58.40m
+
