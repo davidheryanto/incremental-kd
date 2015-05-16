@@ -351,12 +351,13 @@ class MLP(object):
         # log likelihood of the output of the model, computed in the
         # logistic regression layera
         self.negative_log_likelihood = self.logRegressionLayer.negative_log_likelihood
-        self.dropout_negative_log_likelihood = (
-            self.dropoutLogRegressionLayer.negative_log_likelihood)
+        self.dropout_negative_log_likelihood = self.dropoutLogRegressionLayer.negative_log_likelihood
 
         self.p_y_given_x = self.logRegressionLayer.p_y_given_x
         self.p_y_given_x_relaxed = self.logRegressionLayer.p_y_given_x_relaxed
-        # TODO: should p_y_given_x for dropout be done as well?
+
+        self.dropout_p_y_given_x = self.dropoutLogRegressionLayer.p_y_given_x
+        self.dropout_p_y_given_x_relaxed = self.dropoutLogRegressionLayer.p_y_given_x_relaxed
 
         # same holds for the function computing the number of errors
         self.errors = self.logRegressionLayer.errors
