@@ -40,7 +40,7 @@ import os
 import sys
 import time
 
-import numpy
+import numpy as np
 import theano
 import theano.tensor as T
 
@@ -74,7 +74,7 @@ class LogisticRegression(object):
         # initialize with 0 the weights W as a matrix of shape (n_in, n_out)
         if W is None:
             self.W = theano.shared(
-                value=numpy.zeros((n_in, n_out), dtype=theano.config.floatX),
+                value=np.zeros((n_in, n_out), dtype=theano.config.floatX),
                 name='W',
                 borrow=True
             )
@@ -84,7 +84,7 @@ class LogisticRegression(object):
         # initialize the baises b as a vector of n_out 0s
         if b is None:
             self.b = theano.shared(
-                value=numpy.zeros((n_out,), dtype=theano.config.floatX),
+                value=np.zeros((n_out,), dtype=theano.config.floatX),
                 name='b',
                 borrow=True
             )
@@ -173,7 +173,6 @@ def load_cifar10():
     from pylearn2.datasets.zca_dataset import ZCA_Dataset
     # from pylearn2.datasets.cifar10 import CIFAR10
     import theano
-    import numpy as np
 
     def rotate_and_convert_grayscale(img):
         reshaped = img.reshape(32, 32, 3, order='F')
@@ -209,7 +208,7 @@ def load_cifar10():
     test_set.X = transform(test_set.X)
 
     def shared_y_cast(y):
-        shared_y = theano.shared(numpy.asarray(y, dtype=theano.config.floatX), borrow=True)
+        shared_y = theano.shared(np.asarray(y, dtype=theano.config.floatX), borrow=True)
         return T.cast(shared_y, 'int32')
 
     train_set_tuple = (theano.shared(np.array(train_set.X, dtype=theano.config.floatX), borrow=True),
@@ -237,7 +236,7 @@ def load_cifar10(cifar_path, confidence_ascending=None):
         return np.array(result)
 
     def shared_y_cast(y):
-        shared_y = theano.shared(numpy.asarray(y, dtype=theano.config.floatX), borrow=True)
+        shared_y = theano.shared(np.asarray(y, dtype=theano.config.floatX), borrow=True)
         return T.cast(shared_y, 'int32')
 
     whitened_path = os.path.join(cifar_path, 'pylearn2_gcn_whitened')
@@ -250,8 +249,6 @@ def load_cifar10(cifar_path, confidence_ascending=None):
     test_set = ZCA_Dataset(preprocessed_test_dataset, preprocesssor)
 
     if confidence_ascending is not None:
-        import numpy as np
-
         X_new = np.empty_like(train_set.X)
         y_new = np.empty_like(train_set.y)
 
@@ -330,8 +327,6 @@ def load_data(dataset, confidence_ascending=None):
     # target to the example with the same index in the input.
 
     if confidence_ascending is not None:
-        import numpy as np
-
         X_new = np.empty_like(train_set[0])
         y_new = np.empty_like(train_set[1])
 
@@ -353,10 +348,10 @@ def load_data(dataset, confidence_ascending=None):
         variable) would lead to a large decrease in performance.
         """
         data_x, data_y = data_xy
-        shared_x = theano.shared(numpy.asarray(data_x,
+        shared_x = theano.shared(np.asarray(data_x,
                                                dtype=theano.config.floatX),
                                  borrow=borrow)
-        shared_y = theano.shared(numpy.asarray(data_y,
+        shared_y = theano.shared(np.asarray(data_y,
                                                dtype=theano.config.floatX),
                                  borrow=borrow)
         # When storing data on the GPU it has to be stored as floats
@@ -490,7 +485,7 @@ def sgd_optimization_mnist(learning_rate=0.13, n_epochs=1000,
     # on the validation set; in this case we
     # check every epoch
 
-    best_validation_loss = numpy.inf
+    best_validation_loss = np.inf
     test_score = 0.
     start_time = time.clock()
 
@@ -508,7 +503,7 @@ def sgd_optimization_mnist(learning_rate=0.13, n_epochs=1000,
                 # compute zero-one loss on validation set
                 validation_losses = [validate_model(i)
                                      for i in xrange(n_valid_batches)]
-                this_validation_loss = numpy.mean(validation_losses)
+                this_validation_loss = np.mean(validation_losses)
 
                 print(
                     'epoch %i, minibatch %i/%i, validation error %f %%' %
@@ -532,7 +527,7 @@ def sgd_optimization_mnist(learning_rate=0.13, n_epochs=1000,
 
                     test_losses = [test_model(i)
                                    for i in xrange(n_test_batches)]
-                    test_score = numpy.mean(test_losses)
+                    test_score = np.mean(test_losses)
 
                     print(
                         (

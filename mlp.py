@@ -127,14 +127,15 @@ class HiddenLayer(object):
             if activation == theano.tensor.nnet.sigmoid:
                 W_values *= 4
 
-            W = theano.shared(value=W_values, name='W', borrow=True)
+            self.W = theano.shared(value=W_values, name='W', borrow=True)
+        else:
+            self.W = W
 
         if b is None:
             b_values = numpy.zeros((n_out,), dtype=theano.config.floatX)
-            b = theano.shared(value=b_values, name='b', borrow=True)
-
-        self.W = W
-        self.b = b
+            self.b = theano.shared(value=b_values, name='b', borrow=True)
+        else:
+            self.b = b
 
         lin_output = T.dot(input, self.W) + self.b
         self.output = (
@@ -161,7 +162,7 @@ class DropoutHiddenLayer(HiddenLayer):
 class LeNetConvPoolLayer(object):
     """Pool Layer of a convolutional network """
 
-    def __init__(self, rng, input, filter_shape, image_shape, poolsize=(2, 2)):
+    def __init__(self, rng, input, filter_shape, image_shape, poolsize=(2, 2), W=None, b=None):
         from theano.tensor.signal import downsample
         from theano.tensor.nnet import conv
 
@@ -197,19 +198,26 @@ class LeNetConvPoolLayer(object):
         # pooling size
         fan_out = (filter_shape[0] * numpy.prod(filter_shape[2:]) /
                    numpy.prod(poolsize))
-        # initialize weights with random weights
-        W_bound = numpy.sqrt(6. / (fan_in + fan_out))
-        self.W = theano.shared(
-            numpy.asarray(
-                rng.uniform(low=-W_bound, high=W_bound, size=filter_shape),
-                dtype=theano.config.floatX
-            ),
-            borrow=True
-        )
 
-        # the bias is a 1D tensor -- one bias per output feature map
-        b_values = numpy.zeros((filter_shape[0],), dtype=theano.config.floatX)
-        self.b = theano.shared(value=b_values, borrow=True)
+        if W is None:
+            # initialize weights with random weights
+            W_bound = numpy.sqrt(6. / (fan_in + fan_out))
+            self.W = theano.shared(
+                numpy.asarray(
+                    rng.uniform(low=-W_bound, high=W_bound, size=filter_shape),
+                    dtype=theano.config.floatX
+                ),
+                borrow=True
+            )
+        else:
+            self.W = W
+
+        if b is None:
+            # the bias is a 1D tensor -- one bias per output feature map
+            b_values = numpy.zeros((filter_shape[0],), dtype=theano.config.floatX)
+            self.b = theano.shared(value=b_values, borrow=True)
+        else:
+            self.b = b
 
         # convolve input feature maps with filters
         conv_out = conv.conv2d(
@@ -234,6 +242,14 @@ class LeNetConvPoolLayer(object):
 
         # store parameters of this layer
         self.params = [self.W, self.b]
+
+
+class DropoutLenetConvPoolLayer(LeNetConvPoolLayer):
+    def __init__(self, rng, input, filter_shape, image_shape, dropout_p, poolsize=(2, 2)):
+        super(DropoutLenetConvPoolLayer, self).__init__(
+            rng=rng, input=input, filter_shape=filter_shape, image_shape=image_shape, poolsize=poolsize
+        )
+        self.output = _dropout_from_layer(rng, self.output, p=dropout_p)
 
 
 def _dropout_from_layer(rng, layer, p):
@@ -379,60 +395,104 @@ class MLPConv(object):
                  nkerns=(20, 50),
                  n_in=400,
                  n_out=10,
-                 temperature=1):
+                 temperature=1,
+                 dropout_ps=[0.0, 0.0, 0.0, 0.0]):
         layer0_input = model_input.reshape((batch_size,) + image_shape)
+        layer0_input_dropout = _dropout_from_layer(rng, layer0_input, p=dropout_ps[0])
+
+        self.layer0_dropout = DropoutLenetConvPoolLayer(
+            rng,
+            input=layer0_input_dropout,
+            image_shape=(batch_size,) + image_shape,
+            filter_shape=(nkerns[0],) + (image_shape[0],) + filter_shape,
+            poolsize=poolsize,
+            dropout_p=dropout_ps[1]
+        )
         self.layer0 = LeNetConvPoolLayer(
             rng,
             input=layer0_input,
+            W=self.layer0_dropout.W * (1 - dropout_ps[0]),
+            b=self.layer0_dropout.b,
             image_shape=(batch_size,) + image_shape,
             filter_shape=(nkerns[0],) + (image_shape[0],) + filter_shape,
             poolsize=poolsize,
         )
 
+        self.layer1_dropout = DropoutLenetConvPoolLayer(
+            rng,
+            input=self.layer0_dropout.output,
+            image_shape=(batch_size,) + (nkerns[0],) + (14, 14),
+            filter_shape=(nkerns[1], nkerns[0]) + (5, 5),
+            poolsize=poolsize,
+            dropout_p=dropout_ps[2],
+        )
         self.layer1 = LeNetConvPoolLayer(
             rng,
             input=self.layer0.output,
+            W=self.layer1_dropout.W * (1 - dropout_ps[1]),
+            b=self.layer1_dropout.b,
             image_shape=(batch_size,) + (nkerns[0],) + (14, 14),
             filter_shape=(nkerns[1], nkerns[0]) + (5, 5),
             poolsize=poolsize,
         )
 
+        self.layer2_dropout = DropoutHiddenLayer(
+            rng,
+            input=self.layer1_dropout.output.flatten(2),
+            n_in=nkerns[1] * 5 * 5,
+            n_out=n_in,
+            activation=T.tanh,
+            dropout_p=dropout_ps[3],
+        )
         self.layer2 = HiddenLayer(
             rng,
             input=self.layer1.output.flatten(2),
+            W=self.layer2_dropout.W * (1 - dropout_ps[2]),
+            b=self.layer2_dropout.b,
             n_in=nkerns[1] * 5 * 5,
             n_out=n_in,
             activation=T.tanh,
         )
 
+        self.logRegressionLayer_dropout = LogisticRegression(
+            input=self.layer2_dropout.output,
+            n_in=n_in,
+            n_out=n_out,
+            temperature=temperature
+        )
         self.logRegressionLayer = LogisticRegression(
             input=self.layer2.output,
+            W=self.logRegressionLayer_dropout.W * (1 - dropout_ps[3]),
+            b=self.logRegressionLayer_dropout.b,
             n_in=n_in,
             n_out=n_out,
             temperature=temperature
         )
 
-        self.L1 = abs(self.layer1.W).sum() + \
-                  abs(self.layer2.W).sum() + \
-                  abs(self.logRegressionLayer.W).sum()
+        # self.L1 = (
+        #     abs(self.layer1_dropout.W).sum()
+        #     + abs(self.layer2_dropout.W).sum()
+        #     + abs(self.logRegressionLayer.W_dropout).sum()
+        # )
+        #
+        # self.L2_sqr = (self.layer1.W ** 2).sum() + \
+        #               (self.layer2.W ** 2).sum() + \
+        #               (self.logRegressionLayer.W ** 2).sum()
 
-        self.L2_sqr = (self.layer1.W ** 2).sum() + \
-                      (self.layer2.W ** 2).sum() + \
-                      (self.logRegressionLayer.W ** 2).sum()
-
-        self.negative_log_likelihood = (
-            self.logRegressionLayer.negative_log_likelihood
-        )
+        self.negative_log_likelihood = self.logRegressionLayer.negative_log_likelihood
+        self.negative_log_likelihood_dropout = self.logRegressionLayer_dropout.negative_log_likelihood
 
         self.errors = self.logRegressionLayer.errors
+        self.errors_dropout = self.logRegressionLayer_dropout.errors
 
-        self.params = self.logRegressionLayer.params + \
-                      self.layer2.params + \
-                      self.layer1.params + \
-                      self.layer0.params
+        self.params = (
+            self.logRegressionLayer_dropout.params
+            + self.layer2_dropout.params
+            + self.layer1_dropout.params
+            + self.layer0_dropout.params
+        )
 
         self.p_y_given_x = self.logRegressionLayer.p_y_given_x
-
         self.p_y_given_x_relaxed = self.logRegressionLayer.p_y_given_x_relaxed
 
 
@@ -546,7 +606,7 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
     updates = [
         (param, param - learning_rate * gparam)
         for param, gparam in zip(classifier.params, gparams)
-    ]
+        ]
 
     # compiling a Theano function `train_model` that returns the cost, but
     # in the same time updates the parameter of the model based on the rules
